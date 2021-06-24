@@ -43,7 +43,7 @@ spec:
         - name: init-nginx
           image: busybox	
           command:
-            - wget
+          #indicar commandos a ejecutar.  
       volumes:
         - name: nginx-conf-volume
           emptyDir: {}
