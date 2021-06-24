@@ -41,7 +41,7 @@ spec:
           workingDir: /
      initContainers:
         - name: init-nginx
-	        image: busybox
+	  image: busybox
           command:
             - wget
       volumes:
