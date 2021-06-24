@@ -39,11 +39,28 @@ spec:
               readOnly: false
               
           workingDir: /
-     initContainers:
+      initContainers:
         - name: init-nginx
-          image: busybox	
+          args:
+            - -c
+            - cd /src/ ; git clone https://github.com/DavidGnlv/nginx; cd nginx; git checkout openshift; cp run/configs/nginx/etc/nginx/nginx.conf /etc/nginx/nginx.conf; cp run/secrets/nginx/etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf; cd /src/; rm -rf /src/nginx
           command:
-          #indicar commandos a ejecutar.  
+            - sh 
+          image: index.docker.io/alpine/git:latest
+          volumeMounts:
+            - mountPath: /src/
+              name: nginx-init-volume
+              readonly: false
+              
+            - mountPath: /etc/nginx/nginx.conf
+              name: santander-nginx-conf-volume
+              subpath: nginx.conf
+              readonly: false
+              
+            - mountPath: /etc/nginx/conf.d/default.conf
+              name: santander-default-conf-volume
+              subpath: nginx.conf
+              readonly: false
       volumes:
         - name: nginx-conf-volume
           emptyDir: {}
@@ -52,5 +69,7 @@ spec:
         - name: nginx-cache-volume
           emptyDir: {}
         - name: nginx-run-volume
-          emptyDir: {}          
+          emptyDir: {}
+        - name: nginx-init-volume
+          emptyDir: {}
 
