@@ -39,6 +39,11 @@ spec:
               readOnly: false
               
           workingDir: /
+     initContainers:
+        - name: init-nginx
+	        image: busybox
+          command:
+            - wget
       volumes:
         - name: nginx-conf-volume
           emptyDir: {}
